@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Colors, Fonts, Images} from '../contants';
+import {Colors, Fonts, Images} from '../constants';
 import {StaticImageService} from '../services';
 import {Display} from '../utils';
 

@@ -14,7 +14,7 @@ import {
   RestaurantMediumCard,
   Separator,
 } from '../components';
-import {Colors, Fonts, Mock} from '../contants';
+import {Colors, Fonts, Mock} from '../constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';

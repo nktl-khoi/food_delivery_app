@@ -1,11 +1,11 @@
 import StaticImageService from './StaticImageService';
-import AuthenicationService from './AuthenticationService';
-import StorageService from './StorageService';
+// import AuthenicationService from './AuthenticationService';
+// import StorageService from './StorageService';
 import RestaurantService from './RestaurantService';
 
 export {
   StaticImageService,
-  AuthenicationService,
-  StorageService,
+  // AuthenicationService,
+  // StorageService,
   RestaurantService,
 };
