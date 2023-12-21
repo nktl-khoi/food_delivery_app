@@ -6,7 +6,8 @@ import {Display} from '../utils';
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Welcome');
+      // navigation.navigate('Welcome');
+      navigation.navigate('HomeScreen');
     }, 1500);
   }, []);
   return (
