@@ -31,7 +31,9 @@ export default function OrderDetailsWithData(props: ThisProps): JSX.Element {
   const userEmail = props.data.user.account.email;
   const userName = props.data.user.name;
   const phoneNumber = props.data.user.phoneNumber;
-  const loginAs = props.data.user.loginAs;
+  const loginAs =
+    props.data.productSize.product.productSubcategory.productCategory.shop.user
+      .loginAs;
 
   const shopAvatarUri =
     props.data.productSize.product.productSubcategory.productCategory.shop
@@ -52,6 +54,7 @@ export default function OrderDetailsWithData(props: ThisProps): JSX.Element {
   const updateAtTime = convertMillisecondsToDate(props.data.updatedAt);
   const updateAtString = convertDateTo_HM_DMY(updateAtTime);
 
+  console.log('LOGIN AS: ', loginAs);
   const onPressReport = () => {
     props.navigation.navigate('ReportVendorScreen', {
       accountReportedId: props.data.user.account.id,

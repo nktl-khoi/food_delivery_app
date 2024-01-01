@@ -27,6 +27,9 @@ export const GET_ORDER_BY_ID = gql`
                 shopName
                 shopPhoneNumber
                 imageUri
+                user {
+                  loginAs
+                }
               }
             }
           }
@@ -36,7 +39,6 @@ export const GET_ORDER_BY_ID = gql`
       createdAt
       updatedAt
       user {
-        loginAs
         name
         imageUrl
         account {

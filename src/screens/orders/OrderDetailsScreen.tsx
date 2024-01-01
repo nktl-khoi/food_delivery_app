@@ -21,6 +21,8 @@ export default function OrderDetailsScreen(props: ThisProps): JSX.Element {
   });
 
   if (loading) return <ActivityIndicator size={'large'} />;
+  console.log('ORDER DETAIL: ', data?.getOrderById);
+
   return (
     <OrderDetailsWithData
       data={data?.getOrderById ? data.getOrderById : null}
