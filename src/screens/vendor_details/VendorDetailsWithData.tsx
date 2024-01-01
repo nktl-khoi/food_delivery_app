@@ -1,21 +1,15 @@
 import {Button} from '@rneui/themed';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import VendorInfoDisplay from './display/VendorInfoDisplay';
+import {StyleSheet, View} from 'react-native';
+import ShopInfoDisplay from '../../shop_screens/display/ShopInfoDisplay';
 import VerticalListFood from '../../components/displays/VerticalListFood';
-import {useQuery} from '@apollo/client';
-import {GET_ALL_SUBCATEGORY_OF_SHOP} from './VendorDetailsQuery';
 import {SectionText} from '../../components/texts/SectionText';
 import HorizontalListFood from '../../components/displays/HorizontalListFood';
 import {useCallback} from 'react';
 
 type ThisProps = {
-  shopId: string;
+  data: ArrayLike<any>;
   navigation: any;
-};
-
-type FoodSectionType = {
-  title: string;
-  listFood: ArrayLike<any>;
+  shopId: string;
 };
 
 export default function VendorDetailsWithData(props: ThisProps): JSX.Element {
@@ -24,15 +18,10 @@ export default function VendorDetailsWithData(props: ThisProps): JSX.Element {
       shopId: props.shopId,
     });
   };
-  const {data, loading} = useQuery(GET_ALL_SUBCATEGORY_OF_SHOP, {
-    variables: {
-      getAllSubCategoryOfShopId: props.shopId,
-    },
-  });
 
   const memorizedValue = useCallback(
-    ({item}: {item: any}) => (
-      <View>
+    ({item, index}: {item: any; index: number}) => (
+      <View key={index}>
         <SectionText>{item.title}</SectionText>
         <HorizontalListFood
           data={item.products}
@@ -40,25 +29,29 @@ export default function VendorDetailsWithData(props: ThisProps): JSX.Element {
         />
       </View>
     ),
-    [data],
+    [props.data],
   );
 
-  if (!loading) {
-    return (
-      <VerticalListFood
-        data={data?.getAllSubCategoryOfShop}
-        navigation={props.navigation}
-        contentContainerStyle={styles.container}
-        renderItem={memorizedValue}
-        listHeaderComponent={<VendorInfoDisplay id={props.shopId} />}
-        listFooterComponent={
-          <Button buttonStyle={styles.button} onPress={navigateToAllFoodOfShop}>
-            VIEW ALL FOODS
-          </Button>
-        }
-      />
-    );
-  } else return <ActivityIndicator size={'large'} />;
+  return (
+    <VerticalListFood
+      data={props.data}
+      navigation={props.navigation}
+      contentContainerStyle={styles.container}
+      renderItem={memorizedValue}
+      listHeaderComponent={
+        <ShopInfoDisplay
+          canReport
+          navigation={props.navigation}
+          id={props.shopId}
+        />
+      }
+      listFooterComponent={
+        <Button buttonStyle={styles.button} onPress={navigateToAllFoodOfShop}>
+          VIEW ALL FOODS
+        </Button>
+      }
+    />
+  );
 }
 
 const styles = StyleSheet.create({

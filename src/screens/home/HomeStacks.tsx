@@ -4,16 +4,20 @@ import VendorDetailsScreen from '../vendor_details/VendorDetailsScreen';
 import HomeScreen from './HomeScreen';
 import SearchScreen from '../search/SearchScreen';
 import colors from '../../styles/colors';
-import AccountStacks from '../account/AccountStacks';
 import AllFoodInShopGridDisplay from '../vendor_details/AllFoodInShopGridDisplay';
+import AccountScreen from '../account/AccountScreen';
+import ReviewFoodScreen from '../food_details/ReviewFoodScreen';
+import ReportVendorScreen from '../vendor_details/ReportVendorScreen';
 
 type HomeStackParams = {
   HomeScreen: undefined;
   FoodDetailsScreen: undefined;
   VendorDetailsScreen: undefined;
   VendorFoodDetails: undefined;
-  AccountStacks: undefined;
+  AccountScreen: undefined;
   SearchScreen: undefined;
+  ReviewFoodScreen: undefined;
+  ReportVendorScreen: undefined;
 };
 
 const HomeNavigators = createNativeStackNavigator<HomeStackParams>();
@@ -49,12 +53,12 @@ export default function HomeStacks(): JSX.Element {
         options={{headerShown: true, title: ''}}
       />
       <HomeNavigators.Screen
-        name="AccountStacks"
-        component={AccountStacks}
+        name="AccountScreen"
+        component={AccountScreen}
         options={{
-          headerTransparent: true,
           headerShown: true,
           headerTitle: '',
+          headerTransparent: true,
         }}
       />
       <HomeNavigators.Screen
@@ -64,6 +68,16 @@ export default function HomeStacks(): JSX.Element {
           headerShown: false,
           title: 'Searching',
         }}
+      />
+      <HomeNavigators.Screen
+        name="ReviewFoodScreen"
+        component={ReviewFoodScreen}
+        options={{headerShown: true, title: 'List reviews'}}
+      />
+      <HomeNavigators.Screen
+        name="ReportVendorScreen"
+        component={ReportVendorScreen}
+        options={{headerShown: true, title: 'Report shop'}}
       />
     </HomeNavigators.Navigator>
   );

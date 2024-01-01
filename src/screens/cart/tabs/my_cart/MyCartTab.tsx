@@ -24,7 +24,9 @@ export default function MyCartTab(props: ThisProps): JSX.Element {
 
   return (
     <>
-      {!data ? (
+      {data === null || data?.getAllCartProductOfUser?.length <= 0 ? (
+        <EmptyCartTab navigation={props.navigation} />
+      ) : (
         <View style={styles.container}>
           {loading ? (
             <ActivityIndicator size={'small'} />
@@ -41,8 +43,6 @@ export default function MyCartTab(props: ThisProps): JSX.Element {
             />
           )}
         </View>
-      ) : (
-        <EmptyCartTab navigation={props.navigation} />
       )}
     </>
   );

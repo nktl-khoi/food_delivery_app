@@ -19,7 +19,7 @@ export function ListHeaderOrder(props: ThisProps): JSX.Element {
     <View style={styles.container}>
       <View style={styles.text}>
         <ItemTitleText>Address</ItemTitleText>
-        <TextLink onPress={() => {}}>Choose address</TextLink>
+        {/* <TextLink onPress={() => {}}>Choose address</TextLink> */}
       </View>
 
       <EditAddressDisplay

@@ -7,6 +7,8 @@ import AccountScreen from './AccountScreen';
 import EditAccountScreen from './EditAccountScreen';
 import ChangePasswordScreen from './ChangePasswordScreen';
 import CreateShopAccountScreen from './CreateShopAccountScreen';
+import ReviewFoodScreen from '../food_details/ReviewFoodScreen';
+import ReportVendorScreen from '../vendor_details/ReportVendorScreen';
 
 type AccountStackParams = {
   FoodDetailsScreen: undefined;
@@ -16,6 +18,8 @@ type AccountStackParams = {
   EditAccountScreen: undefined;
   ChangePasswordScreen: undefined;
   CreateShopAccountScreen: undefined;
+  ReviewFoodScreen: undefined;
+  ReportVendorScreen: undefined;
 };
 
 const AccountNavigators = createNativeStackNavigator<AccountStackParams>();
@@ -53,6 +57,9 @@ export default function AccountStacks(): JSX.Element {
         component={AccountScreen}
         options={{
           headerShown: false,
+          contentStyle: {
+            backgroundColor: colors.lightGrey,
+          },
         }}
       />
       <AccountNavigators.Screen
@@ -78,6 +85,16 @@ export default function AccountStacks(): JSX.Element {
           headerShown: true,
           headerTitle: 'Create a shop account',
         }}
+      />
+      <AccountNavigators.Screen
+        name="ReviewFoodScreen"
+        component={ReviewFoodScreen}
+        options={{headerShown: true, title: 'List reviews'}}
+      />
+      <AccountNavigators.Screen
+        name="ReportVendorScreen"
+        component={ReportVendorScreen}
+        options={{headerShown: true, title: 'Report shop'}}
       />
     </AccountNavigators.Navigator>
   );

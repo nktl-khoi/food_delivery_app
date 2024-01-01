@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native';
 import {useCallback} from 'react';
-import {ItemHistoryOrderType} from '../../../types/ItemType';
 import GenericFlatList from '../../../components/displays/generics/GenericFlatList';
 import ItemHistoryOrder from './ItemHistoryOrder';
 
@@ -10,21 +9,22 @@ type ThisProps = {
 };
 
 export default function HistoryOrderList(props: ThisProps): JSX.Element {
-  const navigateToFoodDetailsScreen = (item: ItemHistoryOrderType) => {
-    props.navigation.navigate('FoodDetailsScreen', {
-      foodName: item.foodName,
+  const navigateToOrderDetailScreen = (item: any) => {
+    props.navigation.navigate('OrderDetailsScreen', {
+      orderId: item.id,
     });
   };
 
   const memorizedValue = useCallback(
-    ({item}: {item: ItemHistoryOrderType}) => (
+    ({item}: {item: any}) => (
       <ItemHistoryOrder
-        onPressItem={() => navigateToFoodDetailsScreen(item)}
+        onPressItem={() => navigateToOrderDetailScreen(item)}
+        status={item.status}
         id={item.id}
-        foodName={item.foodName}
-        date={item.date}
-        priceValue={item.priceValue}
-        imageUri={item.imageUri}
+        foodName={item.productSize.product.title}
+        date={item.createdAt}
+        priceValue={item.productSize.fullPrice}
+        imageUri={item.productSize.product.imageUri}
       />
     ),
     [props.data],

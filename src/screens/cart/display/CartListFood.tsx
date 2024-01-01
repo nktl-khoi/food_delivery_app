@@ -4,7 +4,7 @@ import ItemCart from './ItemCart';
 import GenericFlatList from '../../../components/displays/generics/GenericFlatList';
 import {TotalPriceAndPlaceOrder} from './TotalPriceAndPlaceOrderDisplay';
 import {ItemTitleText} from '../../../components/texts/ItemTitleText';
-import DeleteAllDialog from './DeleteAllDialog';
+import DeleteAllCartDialog from './DeleteAllCartDialog';
 
 type ThisProps = {
   data: ArrayLike<any>;
@@ -18,7 +18,7 @@ export default function CartListFood(props: ThisProps): JSX.Element {
 
   const navigateToFoodDetailsScreen = (item: any) => {
     props.navigation.navigate('FoodDetailsScreen', {
-      foodName: item.foodName,
+      foodId: item.productSize.product.id,
     });
   };
 
@@ -66,13 +66,14 @@ export default function CartListFood(props: ThisProps): JSX.Element {
       ListHeaderComponent={
         <View style={styles.header}>
           <ItemTitleText>All products</ItemTitleText>
-          <DeleteAllDialog userId={props.userId} refetch={props.refetch} />
+          <DeleteAllCartDialog userId={props.userId} refetch={props.refetch} />
         </View>
       }
       ListFooterComponent={
         <TotalPriceAndPlaceOrder
           price={price}
           onPressPlaceOrder={onPressPlaceOrder}
+          loading={false}
         />
       }
     />

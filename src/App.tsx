@@ -6,13 +6,17 @@ import {NavigationContainer} from '@react-navigation/native';
 import {theme} from './styles/theme';
 import LoginScreen from './screens/login/LoginScreen';
 import SignUpScreen from './screens/sign_up/SignUpScreen';
-import {MainStack} from './screens/MainStack';
+import {MainStack} from './MainStack';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+import AllReportScreen from './screens/AllReportScreen';
+import ReportDetailScreen from './admin_screen/account_details/ReportDetailScreen';
 
 type RootStackParams = {
   LoginScreen: undefined;
   SignUpScreen: undefined;
   MainStack: undefined;
+  AllReportScreen: undefined;
+  ReportDetailScreen: undefined;
 };
 const RootStackNavigator = createNativeStackNavigator<RootStackParams>();
 
@@ -41,6 +45,16 @@ export default function App(): JSX.Element {
               <RootStackNavigator.Screen
                 name="MainStack"
                 component={MainStack}
+              />
+              <RootStackNavigator.Screen
+                name="AllReportScreen"
+                component={AllReportScreen}
+                options={{headerShown: true, title: 'All reports'}}
+              />
+              <RootStackNavigator.Screen
+                name="ReportDetailScreen"
+                component={ReportDetailScreen}
+                options={{headerShown: true, title: 'Report details'}}
               />
             </RootStackNavigator.Navigator>
           </NavigationContainer>

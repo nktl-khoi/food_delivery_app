@@ -9,6 +9,8 @@ type ThisProps = {
   data: ArrayLike<any>;
   navigation: any;
   listHeaderComponent?: ItemComponent | any;
+  userId: string;
+  refetch: any;
 };
 
 export default function FavoriteVerticalListFood(
@@ -16,8 +18,7 @@ export default function FavoriteVerticalListFood(
 ): JSX.Element {
   const navigateToFoodDetailsScreen = (item: FoodListItemType) => {
     props.navigation.navigate('FoodDetailsScreen', {
-      id: item.id,
-      foodName: item.foodName,
+      foodId: item.id,
     });
   };
 
@@ -27,16 +28,17 @@ export default function FavoriteVerticalListFood(
   };
 
   const memorizedValue = useCallback(
-    ({item}: {item: FoodListItemType}) => (
+    ({item}: {item: any}) => (
       <ItemFavoriteFood
-        imageUri={''}
-        foodName={item.foodName}
-        vendorName={item.vendorName}
-        priceValue={item.priceValue}
-        onPressItem={() => navigateToFoodDetailsScreen(item)}
-        onPressFavoriteButton={() => removeFromFavorite(item)}
         id={item.id}
-        rating={item.rating}
+        imageUri={item.imageUri}
+        title={item.title}
+        fullPrice={item.fullPrice}
+        description={item.description}
+        shopName={item.productSubcategory.productCategory.shop.shopName}
+        userId={props.userId}
+        refetch={props.refetch}
+        onPressItem={() => navigateToFoodDetailsScreen(item)}
       />
     ),
     [props.data],

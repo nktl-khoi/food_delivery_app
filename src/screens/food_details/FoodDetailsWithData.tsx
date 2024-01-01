@@ -11,10 +11,11 @@ import ItemVendorDisplay from './display/ItemVendorDisplay';
 import ListSizeFoodDisplay from './display/ListSizeFoodDisplay';
 import ListTagFoodDisplay from './display/ListTagFoodDisplay';
 import {BigTitleText} from '../../components/texts/BigTitleText';
-import RatingText from '../../components/texts/RatingText';
 import {useMutation} from '@apollo/client';
 import {ADD_PRODUCT_TO_CART} from './FoodDetailsQuery';
 import Snackbar from 'react-native-snackbar';
+import fonts from '../../styles/fonts';
+import AverageRatingScoreDisplay from './display/AverageRatingScoreDisplay';
 
 type ThisProps = {
   data: any;
@@ -26,23 +27,13 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
   const [addProductToCart, {loading, error, data}] =
     useMutation(ADD_PRODUCT_TO_CART);
 
-  const [isFavorite, setFavorite] = useState<boolean>(true);
   const [amount, setAmount] = useState(1);
   const [chosen, setChosen] = useState('');
   const [fullPrice, setFullPrice] = useState(
     props.data.getProductById.fullPrice,
   );
 
-  const addToFavoriteFood = () => {
-    console.log('CALL API: add to favorite 3');
-    setFavorite(!isFavorite);
-  };
-
   const addToCart = async () => {
-    console.log('Amount: ', amount);
-    console.log('Size: ', chosen);
-    console.log('Full price: ', fullPrice);
-    console.log(props.userId);
     if (chosen === null) console.log('please chose size');
     await addProductToCart({
       variables: {
@@ -56,12 +47,19 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
     });
   };
 
+  const createReview = () => {
+    props.navigation.navigate('ReviewFoodScreen', {
+      userId: props.userId,
+      productId: props.data.getProductById.id,
+    });
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ImageFoodDetailsDisplay
-        isFavorite={isFavorite}
         imageUri={props.data.getProductById.imageUri}
-        onPressFavoriteButton={addToFavoriteFood}
+        userId={props.userId}
+        productId={props.data.getProductById.id}
       />
 
       <ScrollView
@@ -110,10 +108,10 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
           <View></View>
         )}
 
-        <View style={styles.ratings}>
-          <RatingText ratingScore={4.5} size={16} />
-          <GenericText style={{fontSize: 16}}>1000 ratings</GenericText>
-        </View>
+        <AverageRatingScoreDisplay
+          productId={props.data.getProductById.id}
+          isShowCount={true}
+        />
 
         <View>
           <SectionText style={{fontSize: 16}}>Description</SectionText>
@@ -123,10 +121,20 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
         {loading ? (
           <ActivityIndicator size={'small'} />
         ) : (
-          <Button buttonStyle={styles.buttonAddToCart} onPress={addToCart}>
+          <Button
+            buttonStyle={styles.button}
+            titleStyle={styles.titleButton}
+            onPress={addToCart}>
             ADD TO CART
           </Button>
         )}
+
+        <Button
+          buttonStyle={styles.buttonCreateReview}
+          titleStyle={styles.titleCreateReview}
+          onPress={createReview}>
+          VIEW REVIEW
+        </Button>
       </ScrollView>
     </SafeAreaView>
   );
@@ -145,7 +153,16 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     paddingHorizontal: 28,
   },
-  buttonAddToCart: {paddingVertical: 12},
+  button: {paddingVertical: 12},
+  titleButton: {fontFamily: fonts.POPPINS_BOLD},
+  buttonCreateReview: {
+    paddingVertical: 12,
+    backgroundColor: colors.lightGrey,
+  },
+  titleCreateReview: {
+    color: colors.darkBlack,
+    fontFamily: fonts.POPPINS_BOLD,
+  },
   ratings: {
     flexDirection: 'row',
     alignItems: 'center',

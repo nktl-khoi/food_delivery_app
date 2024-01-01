@@ -5,6 +5,10 @@ import FoodDetailsWithData from './FoodDetailsWithData';
 import {GET_USER_BY_FIREBASE_UID} from '../account/AccountQuery';
 import {FIREBASE_AUTH} from '../../auth/firebaseConfig';
 import {useFocusEffect} from '@react-navigation/native';
+import {UserRole} from '../../types/constants';
+import {GenericText} from '../../components/texts/generics/GenericText';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import ShopFoodDetailWithData from '../../shop_screens/shop_food_details/ShopFoodDetailWithData';
 
 type ThisProps = {
   navigation: any;
@@ -38,11 +42,26 @@ function GetUserIdInFoodDetails(props: GetUserIdType): JSX.Element {
     },
   });
 
+  if (loading) return <ActivityIndicator size={'large'} />;
+  if (data?.getUserByFirebaseUID?.loginAs === UserRole.USER) {
+    return (
+      <FoodDetailsWithData
+        userId={data?.getUserByFirebaseUID?.id}
+        data={props.data ? props.data : null}
+        navigation={props.navigation}
+      />
+    );
+  } else if (data?.getUserByFirebaseUID?.loginAs === UserRole.SHOP_OWNER) {
+    return (
+      <ShopFoodDetailWithData
+        data={props.data ? props.data : null}
+        navigation={props.navigation}
+      />
+    );
+  }
   return (
-    <FoodDetailsWithData
-      userId={data?.getUserByFirebaseUID?.id}
-      data={props.data ? props.data : null}
-      navigation={props.navigation}
-    />
+    <SafeAreaView>
+      <GenericText>Error login</GenericText>
+    </SafeAreaView>
   );
 }

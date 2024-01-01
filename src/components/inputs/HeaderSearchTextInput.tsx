@@ -55,7 +55,7 @@ export default function HeaderSearchTextInput(props: ThisProps): JSX.Element {
         onPress={props.onPressSearch}
       />
 
-      <Button
+      {/* <Button
         buttonStyle={styles.button}
         icon={
           <Icon
@@ -65,7 +65,7 @@ export default function HeaderSearchTextInput(props: ThisProps): JSX.Element {
             type="font-awesome"
           />
         }
-        onPress={() => props.setFilter(!props.isFilter)}></Button>
+        onPress={() => props.setFilter(!props.isFilter)}></Button> */}
     </View>
   );
 }

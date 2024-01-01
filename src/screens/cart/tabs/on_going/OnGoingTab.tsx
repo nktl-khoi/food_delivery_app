@@ -1,43 +1,47 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import OnGoingList from '../../display/OnGoingList';
-
-const listCart = [
-  {
-    id: 1,
-    imageUri: '',
-    foodName: 'Food 1 ',
-    size: 'Small',
-    status: 'Pending',
-    amount: 3,
-  },
-  {
-    id: 2,
-    imageUri: '',
-    foodName: 'Food 2 ',
-    size: 'Large',
-    status: 'Cancel',
-    amount: 4,
-  },
-  {
-    id: 3,
-    imageUri: '',
-    foodName: 'Food 3 ',
-    size: 'Medium',
-    status: 'Complete',
-    amount: 7,
-  },
-];
+import {ActivityIndicator} from 'react-native';
+import {useQuery} from '@apollo/client';
+import {GET_ON_GOING_ORDER_OF_USER} from '../../CartQuery';
+import {useFocusEffect} from '@react-navigation/native';
+import EmptyOnGoingTab from './EmptyOnGoingTab';
 
 type ThisProps = {
   navigation: any;
+  userId: string;
 };
 
-export default function OnGoingTab(props: ThisProps): JSX.Element {
+export default function MyCartTab(props: ThisProps): JSX.Element {
+  const {data, loading, refetch} = useQuery(GET_ON_GOING_ORDER_OF_USER, {
+    variables: {
+      userId: props.userId,
+    },
+  });
+
+  useFocusEffect(() => {
+    refetch();
+  });
+
   return (
-    <View style={styles.container}>
-      <OnGoingList data={listCart} navigation={props.navigation} />
-    </View>
+    <>
+      {data === null || data?.getOnGoingOrdersOfUser?.length <= 0 ? (
+        <EmptyOnGoingTab navigation={props.navigation} />
+      ) : (
+        <View style={styles.container}>
+          {loading ? (
+            <ActivityIndicator size={'small'} />
+          ) : (
+            <OnGoingList
+              data={
+                data?.getOnGoingOrdersOfUser ? data.getOnGoingOrdersOfUser : {}
+              }
+              navigation={props.navigation}
+            />
+          )}
+        </View>
+      )}
+    </>
   );
 }
 

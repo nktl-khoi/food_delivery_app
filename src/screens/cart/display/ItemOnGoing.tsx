@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import ItemImageFood from '../../../components/items/ItemImageFood';
 import display from '../../../utils/display';
 import {ItemTitleText} from '../../../components/texts/ItemTitleText';
@@ -7,28 +7,36 @@ import {ItemSubtitleText} from '../../../components/texts/ItemSubtitleText';
 import {ItemOngoingType} from '../../../types/ItemType';
 import StatusDisplay from '../tabs/on_going/StatusDisplay';
 import colors from '../../../styles/colors';
+import {pressableRippleConfig} from '../../../styles/pressable_config';
+import {OnPressItem} from '../../../types/GenericType';
 
-type ThisProps = ItemOngoingType & {};
+type ThisProps = ItemOngoingType & {
+  onPressItem: OnPressItem;
+};
 
 export default function ItemOnGoing(props: ThisProps): JSX.Element {
   return (
-    <View style={styles.container}>
-      <ItemImageFood
-        imageUri={props.imageUri}
-        imageWidth={display.setWidth(20)}
-        imageHeight={display.setHeight(10)}
-      />
-      <View style={styles.info_container}>
-        <ItemTitleText style={styles.text}>{props.foodName}</ItemTitleText>
+    <Pressable
+      android_ripple={pressableRippleConfig}
+      onPress={props.onPressItem}>
+      <View style={styles.container}>
+        <ItemImageFood
+          imageUri={props.imageUri}
+          imageWidth={display.setWidth(20)}
+          imageHeight={display.setHeight(10)}
+        />
+        <View style={styles.info_container}>
+          <ItemTitleText style={styles.text}>{props.foodName}</ItemTitleText>
 
-        <ItemSubtitleText style={{marginBottom: 4}}>
-          Size: {props.size}
-        </ItemSubtitleText>
-        <ItemSubtitleText>x{props.amount}</ItemSubtitleText>
+          <ItemSubtitleText style={{marginBottom: 4}}>
+            Size: {props.size}
+          </ItemSubtitleText>
+          <ItemSubtitleText>x{props.amount}</ItemSubtitleText>
+        </View>
+
+        <StatusDisplay status={props.status} />
       </View>
-
-      <StatusDisplay status={props.status} />
-    </View>
+    </Pressable>
   );
 }
 

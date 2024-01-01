@@ -2,14 +2,12 @@ import {StyleSheet} from 'react-native';
 import GenericFlatList from '../../../components/displays/generics/GenericFlatList';
 import {GenericText} from '../../../components/texts/generics/GenericText';
 import colors from '../../../styles/colors';
-import {useQuery} from '@apollo/client';
-import {GET_ALL_TAGS} from '../../search/SearchQuery';
 
-type ThisProps = {};
+type ThisProps = {
+  data: ArrayLike<any>;
+};
 
 export default function ListTagFoodDisplay(props: ThisProps): JSX.Element {
-  const {data, loading} = useQuery(GET_ALL_TAGS);
-
   const memorizedValue = ({item, index}: {item: any; index: number}) => (
     <GenericText key={index} style={styles.mainInfoContainer}>
       {item.title}
@@ -18,7 +16,7 @@ export default function ListTagFoodDisplay(props: ThisProps): JSX.Element {
 
   return (
     <GenericFlatList
-      data={data?.getAllTags}
+      data={props.data}
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.contentContainer}

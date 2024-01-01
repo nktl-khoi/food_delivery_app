@@ -15,6 +15,9 @@ export const GET_FOOD_BY_ID = gql`
         title
         fullPrice
       }
+      RatingProduct {
+        score
+      }
       title
       description
       averageRatingScores
@@ -43,5 +46,39 @@ export const ADD_PRODUCT_TO_CART = gql`
       amount: $amount
       fullPrice: $fullPrice
     )
+  }
+`;
+
+export const CREATE_RATING_PRODUCT = gql`
+  mutation Mutation($ratingInput: createRatingProductInput!) {
+    createRatingProduct(ratingInput: $ratingInput)
+  }
+`;
+
+export const GET_RATINGS_OF_A_PRODUCT = gql`
+  query GetAllRatingOfProduct($productId: ID!) {
+    getAllRatingOfProduct(productId: $productId) {
+      user {
+        name
+        imageUrl
+      }
+      shop {
+        shopName
+        imageUri
+      }
+      createdAt
+      updatedAt
+      comment
+      score
+    }
+  }
+`;
+
+export const GET_AVG_SCORE_OF_PRODUCT = gql`
+  query Query($productId: ID!) {
+    getAverageScore(productId: $productId) {
+      avgRating
+      countRating
+    }
   }
 `;

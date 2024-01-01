@@ -2,7 +2,6 @@ import {Icon, Input} from '@rneui/themed';
 import {OnChangeText} from '../../types/GenericType';
 import colors from '../../styles/colors';
 
-
 type ThisProps = {
   value: string;
   onChangeText: OnChangeText;

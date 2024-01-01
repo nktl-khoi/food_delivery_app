@@ -8,6 +8,11 @@ export const GET_SHOP_BY_ID = gql`
       shopAddress
       shopPhoneNumber
       imageUri
+      user {
+        account {
+          id
+        }
+      }
     }
   }
 `;
@@ -35,6 +40,7 @@ export const GET_ALL_PRODUCT_OF_SHOP = gql`
 export const GET_ALL_SUBCATEGORY_OF_SHOP = gql`
   query GetAllSubCategoryOfShop($getAllSubCategoryOfShopId: ID!) {
     getAllSubCategoryOfShop(id: $getAllSubCategoryOfShopId) {
+      id
       title
       products {
         id
@@ -45,5 +51,11 @@ export const GET_ALL_SUBCATEGORY_OF_SHOP = gql`
         averageRatingScores
       }
     }
+  }
+`;
+
+export const CREATE_REPORT_ACCOUNT = gql`
+  mutation CreateReport($reportInput: createReportInput!) {
+    createReport(reportInput: $reportInput)
   }
 `;

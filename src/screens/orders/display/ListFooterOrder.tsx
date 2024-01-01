@@ -17,7 +17,7 @@ export function ListFooterOrder(props: ThisProps): JSX.Element {
     <View style={styles.container}>
       <View>
         <ItemTitleText>Payment method</ItemTitleText>
-        <GenericText>Cast on delivery</GenericText>
+        <GenericText>Cash on delivery</GenericText>
       </View>
 
       <View>

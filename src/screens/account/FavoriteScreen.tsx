@@ -1,65 +1,9 @@
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import FavoriteVerticalListFood from './display/FavoriteVerticalListFood';
 import {SectionText} from '../../components/texts/SectionText';
-
-const popularFastFoodList = [
-  {
-    id: 1,
-    foodName: 'Name',
-    vendorName: 'Vendor',
-    priceValue: 30000,
-    rating: 3.4,
-  },
-  {
-    id: 2,
-    foodName: 'Name 2',
-    vendorName: 'Vendor 2',
-    priceValue: 20000,
-    rating: 3.1,
-  },
-  {
-    id: 3,
-    foodName: 'Name 3',
-    vendorName: 'Vendor 3',
-    priceValue: 10000,
-    rating: 4.4,
-  },
-  {
-    id: 4,
-    foodName: 'Name 4',
-    vendorName: 'Vendor 4',
-    priceValue: 3000,
-    rating: 2.4,
-  },
-  {
-    id: 5,
-    foodName: 'Name 3',
-    vendorName: 'Vendor 3',
-    priceValue: 10000,
-    rating: 4.4,
-  },
-  {
-    id: 6,
-    foodName: 'Name 4',
-    vendorName: 'Vendor 4',
-    priceValue: 3000,
-    rating: 2.4,
-  },
-  {
-    id: 7,
-    foodName: 'Name 3',
-    vendorName: 'Vendor 3',
-    priceValue: 10000,
-    rating: 4.4,
-  },
-  {
-    id: 8,
-    foodName: 'Name 4',
-    vendorName: 'Vendor 4',
-    priceValue: 3000,
-    rating: 2.4,
-  },
-];
+import {useQuery} from '@apollo/client';
+import {GET_FAVOURITE_OF_USER} from './AccountQuery';
+import {useFocusEffect} from '@react-navigation/native';
 
 type ThisProps = {
   navigation: any;
@@ -67,14 +11,30 @@ type ThisProps = {
 };
 
 export default function FavoriteScreen(props: ThisProps): JSX.Element {
-  /** @TODO Add search and filter */
+  const userId = props.route.params.userId;
+  const {data, loading, refetch} = useQuery(GET_FAVOURITE_OF_USER, {
+    variables: {
+      userId: userId,
+    },
+  });
+
+  useFocusEffect(() => {
+    refetch();
+  });
+
   return (
     <View style={styles.container}>
-      <FavoriteVerticalListFood
-        data={popularFastFoodList}
-        navigation={props.navigation}
-        listHeaderComponent={<SectionText>All favorite foods</SectionText>}
-      />
+      {loading ? (
+        <ActivityIndicator size={'small'} />
+      ) : (
+        <FavoriteVerticalListFood
+          data={data.getFavouriteProductsOfUser}
+          navigation={props.navigation}
+          userId={userId}
+          refetch={refetch}
+          listHeaderComponent={<SectionText>All favorite foods</SectionText>}
+        />
+      )}
     </View>
   );
 }

@@ -1,40 +1,51 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import HistoryOrderList from '../../display/HistoryOrderList';
 
-const listHistory = [
-  {
-    id: 1,
-    imageUri: '',
-    foodName: 'Food 1 ',
-    date: 'November 28, 2023',
-    priceValue: 12.3,
-  },
-  {
-    id: 2,
-    imageUri: '',
-    foodName: 'Food 2 ',
-    date: 'November 29, 2023',
-    priceValue: 1.3,
-  },
-  {
-    id: 3,
-    imageUri: '',
-    foodName: 'Food 3 ',
-    date: 'November 30, 2023',
-    priceValue: 2.3,
-  },
-];
+import {ActivityIndicator} from 'react-native';
+
+import {useQuery} from '@apollo/client';
+import {GET_COMPLETE_ORDER_OF_USER} from '../../CartQuery';
+import {useFocusEffect} from '@react-navigation/native';
+import EmptyHistoryOrderTab from './EmptyHistoryOrderTab';
+import HistoryOrderList from '../../display/HistoryOrderList';
 
 type ThisProps = {
   navigation: any;
+  userId: string;
 };
 
 export default function HistoryOrderTab(props: ThisProps): JSX.Element {
+  const {data, loading, refetch} = useQuery(GET_COMPLETE_ORDER_OF_USER, {
+    variables: {
+      userId: props.userId,
+    },
+  });
+
+  useFocusEffect(() => {
+    refetch();
+  });
+
   return (
-    <View style={styles.container}>
-      <HistoryOrderList data={listHistory} navigation={props.navigation} />
-    </View>
+    <>
+      {data === null || data?.getCompleteOrdersOfUser?.length <= 0 ? (
+        <EmptyHistoryOrderTab navigation={props.navigation} />
+      ) : (
+        <View style={styles.container}>
+          {loading ? (
+            <ActivityIndicator size={'small'} />
+          ) : (
+            <HistoryOrderList
+              data={
+                data?.getCompleteOrdersOfUser
+                  ? data.getCompleteOrdersOfUser
+                  : {}
+              }
+              navigation={props.navigation}
+            />
+          )}
+        </View>
+      )}
+    </>
   );
 }
 

@@ -47,7 +47,7 @@ export default function EditAccountScreen(props: ThisProps): JSX.Element {
         }).then(() => {
           console.log('Update with image');
           Snackbar.show({text: 'Account updated success'});
-          props.navigation.navigate('AccountScreen');
+          props.navigation.goBack();
         });
       } catch (error) {
         console.log('EditAccountScreen: ', error);
@@ -64,7 +64,7 @@ export default function EditAccountScreen(props: ThisProps): JSX.Element {
       }).then(() => {
         console.log('Update without image');
         Snackbar.show({text: 'Account updated success'});
-        props.navigation.navigate('AccountScreen');
+        props.navigation.goBack();
       });
     }
   };

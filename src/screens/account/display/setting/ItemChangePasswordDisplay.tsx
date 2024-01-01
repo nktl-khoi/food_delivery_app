@@ -2,13 +2,16 @@ import GenericTextNavigationDisplay from '../../../../components/texts/generics/
 
 type ThisProps = {
   navigation: any;
+  params: any;
 };
 
 export default function ItemChangePasswordDisplay(
   props: ThisProps,
 ): JSX.Element {
   const navigateToChangePasswordScreen = () => {
-    props.navigation.navigate('ChangePasswordScreen');
+    props.navigation.navigate('ChangePasswordScreen', {
+      userEmail: props.params.email,
+    });
   };
   return (
     <GenericTextNavigationDisplay

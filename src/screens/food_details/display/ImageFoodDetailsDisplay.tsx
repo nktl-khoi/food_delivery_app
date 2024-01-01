@@ -1,27 +1,59 @@
 import {Image} from '@rneui/themed';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 
-import {OnPressItem} from '../../../types/GenericType';
-import FavoriteButton from '../../../components/buttons/FavoriteButton';
+import {useQuery} from '@apollo/client';
+import {CHECK_FAVOURITE} from '../../account/AccountQuery';
+import {CreateFavouriteInputType} from '../../../types/ItemType';
+import UnFavouriteButton from '../../../components/buttons/generics/UnFavouriteButton';
+import FavouriteButton from '../../../components/buttons/generics/FavouriteButton';
+import {useFocusEffect} from '@react-navigation/native';
 
 type ThisProps = {
-  isFavorite: boolean;
   imageUri: string;
-  onPressFavoriteButton: OnPressItem;
+  userId: string;
+  productId: string;
 };
 
 export default function ImageFoodDetailsDisplay(props: ThisProps): JSX.Element {
+  const input: CreateFavouriteInputType = {
+    userId: props.userId,
+    productId: props.productId,
+  };
+
+  const {data, loading, refetch} = useQuery(CHECK_FAVOURITE, {
+    variables: {
+      favouriteInput: input,
+    },
+  });
+
+  console.log('FAV', data);
+  useFocusEffect(() => {
+    refetch();
+  });
+
   return (
     <View style={styles.imageContainer}>
       <Image
         source={{uri: props.imageUri}}
         containerStyle={styles.image}
         PlaceholderContent={<ActivityIndicator />}>
-        <FavoriteButton
-          isFavorite={props.isFavorite}
-          iconSize={40}
-          onPressItem={props.onPressFavoriteButton}
-        />
+        {loading === false && (
+          <View>
+            {data?.checkFavouriteInput === true ? (
+              <FavouriteButton
+                userId={props.userId}
+                productId={props.productId}
+                refetch={refetch}
+              />
+            ) : (
+              <UnFavouriteButton
+                userId={props.userId}
+                productId={props.productId}
+                refetch={refetch}
+              />
+            )}
+          </View>
+        )}
       </Image>
     </View>
   );

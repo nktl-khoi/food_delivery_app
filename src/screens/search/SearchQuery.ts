@@ -27,3 +27,5 @@ export const SEARCH_PRODUCT = gql`
     }
   }
 `;
+
+// export const FILTER_PRODUCT = gql``;

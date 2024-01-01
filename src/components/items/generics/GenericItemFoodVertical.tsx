@@ -6,16 +6,16 @@ import ItemImageFood from '../ItemImageFood';
 import {pressableRippleConfig} from '../../../styles/pressable_config';
 import {PriceText} from '../../texts/PriceText';
 
-import {OnPressItem} from '../../../types/GenericType';
+import {ItemComponent, OnPressItem} from '../../../types/GenericType';
 import {FoodListItemType} from '../../../types/ItemType';
 import fonts from '../../../styles/fonts';
 import display from '../../../utils/display';
-import RatingText from '../../texts/RatingText';
-// import FavoriteButton from '../../buttons/FavoriteButton';
+import AverageRatingScoreDisplay from '../../../screens/food_details/display/AverageRatingScoreDisplay';
 
 type ThisProps = FoodListItemType & {
   isFavorite: boolean;
-  onPressFavoriteButton?: OnPressItem;
+  onPressItem: OnPressItem;
+  favouriteComponent?: ItemComponent | any;
 };
 
 export default function GenericItemFoodVertical(props: ThisProps): JSX.Element {
@@ -32,7 +32,6 @@ export default function GenericItemFoodVertical(props: ThisProps): JSX.Element {
       <View style={styles.info_container}>
         <View style={styles.name_and_rating}>
           <ItemTitleText style={styles.text}>{props.title}</ItemTitleText>
-          <RatingText ratingScore={props.averageRatingScores} />
         </View>
         <ItemSubtitleText style={{marginBottom: 4}}>
           {props.shopName}
@@ -45,14 +44,14 @@ export default function GenericItemFoodVertical(props: ThisProps): JSX.Element {
         </View>
       </View>
 
-      {/* {props.isFavorite ? (
-        <FavoriteButton
-          isFavorite={true}
-          onPressItem={() => props.onPressFavoriteButton}
+      <View>
+        <AverageRatingScoreDisplay
+          productId={props.id}
+          isShowCount={false}
+          size={12}
         />
-      ) : (
-        <View></View>
-      )} */}
+        {props.isFavorite ? props.favouriteComponent : <View></View>}
+      </View>
     </Pressable>
   );
 }

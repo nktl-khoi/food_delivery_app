@@ -4,7 +4,7 @@ import GenericFlatList from '../../components/displays/generics/GenericFlatList'
 import ItemOrder from './display/ItemOrder';
 import {ListHeaderOrder} from './display/ListHeaderOrder';
 import {ListFooterOrder} from './display/ListFooterOrder';
-import {OrderInputType, OrderProductInputType} from '../../types/ItemType';
+import {OrderProductInputType} from '../../types/ItemType';
 import {useMutation} from '@apollo/client';
 import {CREATE_ORDER_PRODUCT} from './OrderQuery';
 
@@ -14,27 +14,24 @@ type ThisProps = {
 };
 
 export default function MyOrderScreen(props: ThisProps): JSX.Element {
-  const [deliveryAddress, setDeliveryAddress] = useState('address address');
-  const [commentary, setCommentary] = useState('comment');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [commentary, setCommentary] = useState('');
   const {listData, totalCost, userId} = props.route.params;
   const [deliveryTime, setDeliveryTime] = useState<Date>(new Date());
   const [createOrderProduct, {loading, error, data}] =
     useMutation(CREATE_ORDER_PRODUCT);
 
   const placeOrder = async () => {
-    let order: OrderInputType = {
-      deliveredAt: deliveryTime.toISOString(),
-      deliveryAddress: deliveryAddress,
-      commentary: commentary,
-      totalCost: totalCost,
-      userId: userId,
-    };
-
     let orderProducts: OrderProductInputType[] =
       new Array<OrderProductInputType>();
 
     for (let i = 0; i < listData.length; i++) {
       orderProducts.push({
+        deliveredAt: deliveryTime.toISOString(),
+        deliveryAddress: deliveryAddress,
+        totalCost: listData[i].productSize.fullPrice,
+        userId: userId,
+        commentary: commentary,
         count: listData[i].amount,
         fullPrice: listData[i].productSize.fullPrice,
         productSizeId: listData[i].productSize.id,
@@ -42,7 +39,6 @@ export default function MyOrderScreen(props: ThisProps): JSX.Element {
     }
     await createOrderProduct({
       variables: {
-        order: order,
         orderProducts: orderProducts,
       },
     }).then(() => {

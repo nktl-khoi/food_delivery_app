@@ -17,7 +17,7 @@ export default function GenericBasicInfoItem(props: ThisProps): JSX.Element {
       <Icon
         name={props.iconName}
         type={props.iconType}
-        size={36}
+        size={32}
         color={colors.darkBlack}
       />
       <View style={styles.text}>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 20,
   },
   text: {
     flex: 1,

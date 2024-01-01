@@ -24,7 +24,7 @@ export default function AllFoodInShopGridDisplay(
       <VerticalListFood
         data={data?.getAllProductOfShop}
         navigation={props.navigation}
-        listHeaderComponent={<SectionText>All favorite foods</SectionText>}
+        listHeaderComponent={<SectionText>All foods</SectionText>}
       />
     </View>
   );

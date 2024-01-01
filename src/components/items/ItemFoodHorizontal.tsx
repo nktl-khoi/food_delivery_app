@@ -8,9 +8,12 @@ import {PriceText} from '../texts/PriceText';
 import {FoodListItemType} from '../../types/ItemType';
 import display from '../../utils/display';
 import {Icon} from '@rneui/themed';
-import RatingText from '../texts/RatingText';
+import {OnPressItem} from '../../types/GenericType';
+import AverageRatingScoreDisplay from '../../screens/food_details/display/AverageRatingScoreDisplay';
 
-type ThisProps = FoodListItemType & {};
+type ThisProps = FoodListItemType & {
+  onPressItem: OnPressItem;
+};
 
 export default function ItemFoodHorizontal(props: ThisProps): JSX.Element {
   return (
@@ -26,7 +29,11 @@ export default function ItemFoodHorizontal(props: ThisProps): JSX.Element {
       <View style={styles.info_container}>
         <View style={styles.name_and_rating}>
           <ItemTitleText style={styles.text}>{props.title}</ItemTitleText>
-          <RatingText ratingScore={props.averageRatingScores} />
+          <AverageRatingScoreDisplay
+            productId={props.id}
+            isShowCount={false}
+            size={12}
+          />
         </View>
 
         <ItemSubtitleText style={styles.text}>

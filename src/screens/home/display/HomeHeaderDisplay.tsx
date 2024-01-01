@@ -1,4 +1,4 @@
-import {ActivityIndicator, Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {Avatar} from '@rneui/themed';
 import {BigTitleText} from '../../../components/texts/BigTitleText';
 import {pressableRippleConfig} from '../../../styles/pressable_config';
@@ -14,7 +14,7 @@ type ThisProps = {
 
 export default function HomeHeaderDisplay(props: ThisProps): JSX.Element {
   const navigateToAccountScreen = () => {
-    props.navigation.navigate('AccountStacks');
+    props.navigation.navigate('AccountScreen');
   };
 
   const {data} = useQuery(GET_USER_BY_FIREBASE_UID, {

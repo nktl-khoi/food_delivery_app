@@ -35,10 +35,16 @@ export function MainTabCartScreen(props: ThisProps): JSX.Element {
           />
         </TabView.Item>
         <TabView.Item style={{width: '100%'}}>
-          <OnGoingTab navigation={props.navigation} />
+          <OnGoingTab
+            navigation={props.navigation}
+            userId={data?.getUserByFirebaseUID?.id}
+          />
         </TabView.Item>
         <TabView.Item style={{width: '100%'}}>
-          <HistoryOrderTab navigation={props.navigation} />
+          <HistoryOrderTab
+            navigation={props.navigation}
+            userId={data?.getUserByFirebaseUID?.id}
+          />
         </TabView.Item>
       </TabView>
     </>

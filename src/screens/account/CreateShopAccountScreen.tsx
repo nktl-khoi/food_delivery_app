@@ -1,11 +1,19 @@
 import {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import SaveCancelButton from './display/SaveCancelButton';
-import colors from '../../styles/colors';
-import {Icon, Input} from '@rneui/themed';
+import {useMutation} from '@apollo/client';
+import {CreateShopInputType} from '../../types/ItemType';
+import {CREATE_SHOP_ACCOUNT} from './AccountQuery';
+import Snackbar from 'react-native-snackbar';
+import {
+  Asset,
+  ImageLibraryOptions,
+  launchImageLibrary,
+} from 'react-native-image-picker';
+import {uploadImageToCloudinary} from '../../utils/updateImageToCloudinary';
+import GenericCreateShopScreen from './generics/GenericCreateShopScreen';
 
 type ThisProps = {
   navigation: any;
+  route: any;
 };
 
 export default function CreateShopAccountScreen(props: ThisProps): JSX.Element {
@@ -13,70 +21,91 @@ export default function CreateShopAccountScreen(props: ThisProps): JSX.Element {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [shopName, setShopName] = useState('');
   const [imageUri, setImageUri] = useState('');
+  const [createShopAccount, {loading, data, error}] =
+    useMutation(CREATE_SHOP_ACCOUNT);
 
-  const createShop = () => {};
+  const [userId, setUserId] = useState(props.route.params.user.userId);
+  const [imageFile, setImageFile] = useState<Asset>();
+
+  const [isDisplayError, setDisplayError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const createShop = async () => {
+    if (shopAddress === '' || phoneNumber === '' || shopName === '') {
+      setErrorMessage('Fields cannot be empty!');
+      setDisplayError(true);
+      return;
+    }
+    if (imageFile) {
+      try {
+        const publicId = await uploadImageToCloudinary(imageFile!);
+        let shop: CreateShopInputType = {
+          shopAddress: shopAddress,
+          shopPhoneNumber: phoneNumber,
+          shopName: shopName,
+          imageUri: publicId,
+          userId: userId,
+        };
+        await createShopAccount({
+          variables: {
+            shop: shop,
+          },
+        }).then(() => {
+          Snackbar.show({text: 'Shop account created success'});
+          props.navigation.navigate('AccountScreen');
+        });
+      } catch (error) {
+        console.log('EditAccountScreen: ', error);
+      }
+    } else {
+      let shop: CreateShopInputType = {
+        shopAddress: shopAddress,
+        shopPhoneNumber: phoneNumber,
+        shopName: shopName,
+        imageUri: '',
+        userId: userId,
+      };
+      await createShopAccount({
+        variables: {
+          shop: shop,
+        },
+      }).then(() => {
+        Snackbar.show({text: 'Shop account created success'});
+        props.navigation.goBack();
+      });
+    }
+  };
+
+  const options: ImageLibraryOptions = {
+    mediaType: 'photo',
+    selectionLimit: 1,
+  };
+
+  const onPressImage = () => {
+    launchImageLibrary(options, async response => {
+      if (response?.assets) {
+        setImageFile(response.assets?.at(0));
+        setImageUri(response.assets?.at(0)?.uri!);
+      }
+    });
+  };
 
   return (
-    <View style={styles.container}>
-      <Input
-        placeholder="Enter your shop name..."
-        value={shopName}
-        onChangeText={setShopName}
-        leftIcon={
-          <Icon
-            name="drive-file-rename-outline"
-            size={20}
-            color={colors.darkBlack}
-            type="material"
-          />
-        }
-        leftIconContainerStyle={{marginRight: 10}}
-      />
-
-      <Input
-        placeholder="Enter your shop phone number..."
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        leftIcon={
-          <Icon
-            name="phone"
-            size={20}
-            color={colors.darkBlack}
-            type="material"
-          />
-        }
-        leftIconContainerStyle={{marginRight: 10}}
-      />
-
-      <Input
-        value={shopAddress}
-        onChangeText={setShopAddress}
-        placeholder="Enter your shop address..."
-        leftIcon={
-          <Icon
-            name="location-on"
-            size={20}
-            color={colors.darkBlack}
-            type="material"
-          />
-        }
-        leftIconContainerStyle={{marginRight: 10}}
-      />
-
-      <SaveCancelButton
-        navigation={props.navigation}
-        onPressSave={createShop}
-        title="CREATE"
-      />
-    </View>
+    <GenericCreateShopScreen
+      imageUri={imageUri}
+      email={props.route.params.user.email}
+      onPressImage={onPressImage}
+      shopName={shopName}
+      setShopName={setShopName}
+      phoneNumber={phoneNumber}
+      setPhoneNumber={setPhoneNumber}
+      shopAddress={shopAddress}
+      setShopAddress={setShopAddress}
+      isDisplayError={isDisplayError}
+      errorMessage={errorMessage}
+      loading={loading}
+      navigation={props.navigation}
+      onSaveAction={createShop}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    gap: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 32,
-  },
-});

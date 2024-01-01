@@ -17,10 +17,12 @@ import DeleteDialog from './DeleteDialog';
 import {UPDATE_CART_PRODUCT} from '../CartQuery';
 import {useMutation} from '@apollo/client';
 import Snackbar from 'react-native-snackbar';
+import {OnPressItem} from '../../../types/GenericType';
 
 type ThisProps = ItemCartType & {
   refetch: any;
   sizeId: string;
+  onPressItem: OnPressItem;
 };
 
 export default function ItemCart(props: ThisProps): JSX.Element {

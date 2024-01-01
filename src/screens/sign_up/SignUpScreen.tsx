@@ -1,11 +1,9 @@
 import {ActivityIndicator, View} from 'react-native';
-
 import {GenericText} from '../../components/texts/generics/GenericText';
 import {TextLink} from '../../components/texts/TextLink';
 import {StyleSheet} from 'react-native';
 import {useState} from 'react';
-// import GenericButton from '../../components/buttons/generics/GenericButton';
-
+import GenericButton from '../../components/buttons/generics/GenericButton';
 import {gql, useMutation} from '@apollo/client';
 import {FIREBASE_AUTH} from '../../auth/firebaseConfig';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
@@ -38,10 +36,12 @@ export default function SignUpScreen(props: ThisProps): JSX.Element {
   const onPressButtonSignUp = async () => {
     if (email.length < 1 || password.length < 1 || reEnterPassword.length < 1) {
       setErrorMessage('Fields cannot be empty!');
-      return setDisplayError(true);
+      setDisplayError(true);
+      return;
     } else if (password !== reEnterPassword) {
       setErrorMessage('Re enter password is incorrect!');
-      return setDisplayError(true);
+      setDisplayError(true);
+      return;
     }
 
     const auth = FIREBASE_AUTH;
@@ -55,23 +55,37 @@ export default function SignUpScreen(props: ThisProps): JSX.Element {
               email: email,
               firebaseUid: userUID,
             },
-          }).then(() => {
-            Snackbar.show({text: 'Account created success'});
-            setDisplayError(false);
-            navigateToLoginScreen();
-          });
+          })
+            .then(() => {
+              Snackbar.show({text: 'Account created success'});
+              setDisplayError(false);
+              navigateToLoginScreen();
+            })
+            .catch(error => {
+              const errorCode = error.code;
+              const errorMessage =
+                error.code === 'auth/invalid-credential'
+                  ? 'Your email or password is incorrect!'
+                  : error.message;
+
+              setErrorMessage(`${errorMessage}`);
+            });
         })
         .catch(error => {
           const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(`${errorCode} ${errorMessage}`);
+          const errorMessage =
+            error.code === 'auth/invalid-credential'
+              ? 'Your email or password is incorrect!'
+              : error.message;
+
+          setErrorMessage(`${errorMessage}`);
         });
     } finally {
     }
   };
 
   const navigateToLoginScreen = async () => {
-    props.navigation.navigate('LoginScreen');
+    props.navigation.replace('LoginScreen');
   };
 
   return (
@@ -99,13 +113,13 @@ export default function SignUpScreen(props: ThisProps): JSX.Element {
         </ErrorMessageText>
       )}
 
-      {/* {loading ? (
+      {loading ? (
         <ActivityIndicator size={'large'} />
       ) : (
         <GenericButton onPressItem={onPressButtonSignUp}>
           CREATE ACCOUNT
         </GenericButton>
-      )} */}
+      )}
     </View>
   );
 }
