@@ -8,7 +8,7 @@
 First, you will need to clone this **Repository**.
 To clone this repository, run the following command 
 ```bash
-git clone [https://github.com/phamnhutdanh/fastfood-ingredients-selection.git](https://github.com/nktl-khoi/food_delivery_app.git)
+git clone https://github.com/nktl-khoi/food_delivery_app.git
 ```
 ## Step 2: Install Javascript packages
 You will need to **Install Javascript packages**.
