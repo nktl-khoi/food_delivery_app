@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
 import {useCallback} from 'react';
-import GenericFlatList from '../../../../components/displays/generics/GenericFlatList';
-import ItemReportWithData from '../../display/ItemReportWithData';
-import {ItemTitleText} from '../../../../components/texts/ItemTitleText';
+import GenericFlatList from '../../components/displays/generics/GenericFlatList';
+import {ItemTitleText} from '../../components/texts/ItemTitleText';
+import ItemReportWithData from '../../admin_screen/account_details/display/ItemReportWithData';
 
 type ThisProps = {
   data: ArrayLike<any>;
@@ -10,9 +10,9 @@ type ThisProps = {
   title: string;
 };
 
-export default function ReportList(props: ThisProps): JSX.Element {
+export default function ReportListBan(props: ThisProps): JSX.Element {
   const onPressItem = (item: any) => {
-    props.navigation.navigate('ReportDetailScreen', {
+    props.navigation.navigate('ReportDetailBanScreen', {
       reportDetailId: item.id,
     });
   };
@@ -21,7 +21,7 @@ export default function ReportList(props: ThisProps): JSX.Element {
       <ItemReportWithData
         key={index}
         data={item}
-        isMark={true}
+        isMark={false}
         onPressItem={() => onPressItem(item)}
       />
     ),

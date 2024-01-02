@@ -8,8 +8,9 @@ import LoginScreen from './screens/login/LoginScreen';
 import SignUpScreen from './screens/sign_up/SignUpScreen';
 import {MainStack} from './MainStack';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
-import AllReportScreen from './screens/AllReportScreen';
+import AllReportScreen from './screens/ban/AllReportScreen';
 import ReportDetailScreen from './admin_screen/account_details/ReportDetailScreen';
+import ReportDetailBanScreen from './screens/ban/ReportDetailBanScreen';
 
 type RootStackParams = {
   LoginScreen: undefined;
@@ -17,6 +18,7 @@ type RootStackParams = {
   MainStack: undefined;
   AllReportScreen: undefined;
   ReportDetailScreen: undefined;
+  ReportDetailBanScreen: undefined;
 };
 const RootStackNavigator = createNativeStackNavigator<RootStackParams>();
 
@@ -52,8 +54,8 @@ export default function App(): JSX.Element {
                 options={{headerShown: true, title: 'All reports'}}
               />
               <RootStackNavigator.Screen
-                name="ReportDetailScreen"
-                component={ReportDetailScreen}
+                name="ReportDetailBanScreen"
+                component={ReportDetailBanScreen}
                 options={{headerShown: true, title: 'Report details'}}
               />
             </RootStackNavigator.Navigator>

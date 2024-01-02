@@ -1,7 +1,7 @@
 import React from 'react';
-import GenericEmptyTab from './cart/tabs/generic/GenericEmptyTab';
-import images from '../styles/images';
-import ItemLogoutDisplay from './account/display/setting/ItemLogoutDisplay';
+import GenericEmptyTab from '../cart/tabs/generic/GenericEmptyTab';
+import images from '../../styles/images';
+import ItemLogoutDisplay from '../account/display/setting/ItemLogoutDisplay';
 
 type ThisProps = {
   navigation: any;

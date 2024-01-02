@@ -11,7 +11,7 @@ import {MainShopStack} from './shop_screens/MainShopStack';
 import {useFocusEffect} from '@react-navigation/native';
 import {AccountStatus, UserRole} from './types/constants';
 import {MainAdminStack} from './admin_screen/MainAdminStack';
-import BanScreen from './screens/BanScreen';
+import BanScreen from './screens/ban/BanScreen';
 
 type ThisProps = {
   navigation: any;

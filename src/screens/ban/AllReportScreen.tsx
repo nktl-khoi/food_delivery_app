@@ -1,6 +1,5 @@
-import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import ReportedByTab from '../admin_screen/account_details/tab/reported_account/ReportedByTab';
+import ReportedByTabBan from './ReportedByTabBan';
 
 type ThisProps = {
   navigation: any;
@@ -10,7 +9,7 @@ type ThisProps = {
 export default function AllReportScreen(props: ThisProps): JSX.Element {
   return (
     <SafeAreaView>
-      <ReportedByTab navigation={props.navigation} route={props.route} />
+      <ReportedByTabBan navigation={props.navigation} route={props.route} />
     </SafeAreaView>
   );
 }
