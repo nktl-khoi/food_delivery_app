@@ -10,6 +10,8 @@ import AddProductSizeScreen from '../shop_food_details/AddProductSizeScreen';
 import AllFoodInShopGridDisplay from '../../screens/vendor_details/AllFoodInShopGridDisplay';
 import ReviewFoodScreen from '../../screens/food_details/ReviewFoodScreen';
 import ReportVendorScreen from '../../screens/vendor_details/ReportVendorScreen';
+import EditIngredientsScreen from '../shop_food_details/EditIngredientsScreen';
+import AddIngredientsScreen from '../shop_food_details/AddIngredientsScreen';
 
 type AccountStackParams = {
   ShopCategoryScreen: undefined;
@@ -19,6 +21,8 @@ type AccountStackParams = {
   EditProductScreen: undefined;
   AddProductSizeScreen: undefined;
   AddProductTagScreen: undefined;
+  AddIngredientsScreen: undefined;
+  EditIngredientsScreen: undefined;
   VendorFoodDetails: undefined;
   ReviewFoodScreen: undefined;
   ReportVendorScreen: undefined;
@@ -65,6 +69,16 @@ export default function ShopCategoryStacks(): JSX.Element {
         name="AddProductSizeScreen"
         component={AddProductSizeScreen}
         options={{headerShown: true, title: 'Add product size'}}
+      />
+      <CategoriesNavigators.Screen
+        name="AddIngredientsScreen"
+        component={AddIngredientsScreen}
+        options={{headerShown: true, title: 'Add ingredients'}}
+      />
+      <CategoriesNavigators.Screen
+        name="EditIngredientsScreen"
+        component={EditIngredientsScreen}
+        options={{headerShown: true, title: 'Edit ingredients'}}
       />
       <CategoriesNavigators.Screen
         name="AddProductTagScreen"

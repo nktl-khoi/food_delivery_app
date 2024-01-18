@@ -11,6 +11,14 @@ export const GET_ON_GOING_ORDER_OF_SHOP = gql`
           imageUri
         }
       }
+      orderIngredientDetail {
+        productIngredient {
+          id
+          name
+          imageUri
+          price
+        }
+      }
       status
       count
     }
@@ -27,6 +35,14 @@ export const GET_COMPLETE_ORDER_OF_SHOP = gql`
         product {
           title
           imageUri
+        }
+      }
+      orderIngredientDetail {
+        productIngredient {
+          id
+          name
+          imageUri
+          price
         }
       }
       createdAt

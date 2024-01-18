@@ -9,17 +9,21 @@ import {
 import colors from '../../styles/colors';
 import {GenericText} from '../../components/texts/generics/GenericText';
 import ButtonCancelOrder from './display/ButtonCancelOrder';
-import {OrderStatus} from '../../types/constants';
+import {OrderStatus, UserRole} from '../../types/constants';
 import StatusDisplay from '../cart/tabs/on_going/StatusDisplay';
 import AvatarDisplay from '../account/display/AvatarDisplay';
 import ShopAvatarDisplay from '../../shop_screens/display/ShopAvatarDisplay';
+import ButtonAcceptOrder from './display/ButtonAcceptOrder';
+import ButtonCompleteOrder from './display/ButtonCompleteOrder';
 
 type ThisProps = {
   navigation: any;
   data: any;
 };
 
-export default function OrderDetailsWithData(props: ThisProps): JSX.Element {
+export default function OrderDetailsWithDataShop(
+  props: ThisProps,
+): JSX.Element {
   const orderId = props.data.id;
   const deliveryAddress = props.data.deliveryAddress;
   const commentary = props.data.commentary;
@@ -75,6 +79,8 @@ export default function OrderDetailsWithData(props: ThisProps): JSX.Element {
             avatarUri={avatarUri}
             name={userName}
             email={userEmail}
+            onPressReport={onPressReport}
+            canReport
           />
 
           <View>
@@ -134,6 +140,14 @@ export default function OrderDetailsWithData(props: ThisProps): JSX.Element {
         <ItemTitleText>Total: </ItemTitleText>
         <PriceText priceValue={totalCost}></PriceText>
       </View>
+
+      {status === OrderStatus.PENDING && (
+        <ButtonAcceptOrder orderId={orderId} navigation={props.navigation} />
+      )}
+
+      {status === OrderStatus.ON_THE_WAY && (
+        <ButtonCompleteOrder orderId={orderId} navigation={props.navigation} />
+      )}
 
       {status === OrderStatus.PENDING && (
         <ButtonCancelOrder navigation={props.navigation} orderId={orderId} />

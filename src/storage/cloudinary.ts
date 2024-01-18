@@ -1,12 +1,4 @@
-import {Cloudinary} from '@cloudinary/url-gen';
-
-export const cloudinary = new Cloudinary({
-  cloud: {
-    cloudName: 'dxz5uumy7',
-    apiKey: '272626169313357',
-    apiSecret: 'qiUMjEzYF3_fq7j7OqcxYoVTXOk',
-  },
-  url: {
-    secure: true,
-  },
-});
+export const CLOUD_NAME = 'dxzzpdqe6';
+export const API_KEY = '181927136764366';
+export const API_SECRET = 'JzSy1QNaT4SKLOvWf1PJxWMwZ4g';
+export const UPLOAD_PRESET = 'v2e7uejv';

@@ -8,7 +8,7 @@ type ThisProps = {
 
 export default function CompleteOrderScreen(props: ThisProps): JSX.Element {
   const navigateToCartScreen = () => {
-    props.navigation.navigate('CartScreen');
+    props.navigation.replace('CartScreen');
   };
   return (
     <GenericEmptyTab

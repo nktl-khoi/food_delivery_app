@@ -12,6 +12,12 @@ export const UPDATE_PRODUCT = gql`
   }
 `;
 
+export const UPDATE_PRODUCT_WITH_IMAGE = gql`
+  mutation UpdateProductWithImage($productInput: updateProductWithImageInput!) {
+    updateProductWithImage(productInput: $productInput)
+  }
+`;
+
 export const CREATE_TAG = gql`
   mutation CreateTag($tagInput: createTagInput!) {
     createTag(tagInput: $tagInput)
@@ -21,5 +27,21 @@ export const CREATE_TAG = gql`
 export const CREATE_SIZE = gql`
   mutation CreateProductSize($sizeInput: createSizeInput!) {
     createProductSize(sizeInput: $sizeInput)
+  }
+`;
+
+export const ADD_PRODUCT_INGREDIENTS = gql`
+  mutation AddProductIngredients(
+    $productIngredientsInput: addProductIngredientsInput!
+  ) {
+    addProductIngredients(productIngredientsInput: $productIngredientsInput)
+  }
+`;
+
+export const UPDATE_PRODUCT_INGREDIENTS = gql`
+  mutation UpdateProductIngredients(
+    $productIngredientsInput: updateProductIngredientsInput!
+  ) {
+    updateProductIngredients(productIngredientsInput: $productIngredientsInput)
   }
 `;

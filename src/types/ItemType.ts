@@ -88,6 +88,7 @@ export type OrderProductInputType = {
   deliveredAt: string;
   userId: string;
   productSizeId: string;
+  listIngredients: CartIngredientsInputType[];
 };
 
 export type CreateProductInputType = {
@@ -146,4 +147,61 @@ export type CreateReportInputType = {
   title: string;
   message: string;
   reporterId: string;
+};
+
+export type UpdateShopAccountWithImageInputType = {
+  shopAddress: string;
+  shopPhoneNumber: string;
+  shopName: string;
+  imageUri: string;
+  shopId: string;
+};
+
+export type UpdateProductWithImageInputType = {
+  subcategoryId: string;
+  imageUri: string;
+  title: string;
+  description: string;
+  productId: string;
+};
+
+export type CreateProductWithImageInputType = {
+  subcategoryId: string;
+  imageUri: string;
+  title: string;
+  price: number;
+  sizeTitle: string;
+  description: string;
+};
+export type CreateShopAccountWithImageInputType = {
+  shopAddress: string;
+  shopPhoneNumber: string;
+  shopName: string;
+  imageUri: string;
+  userId: string;
+};
+
+export type AddProductIngredientsInputType = {
+  name: string;
+  imageUri: string;
+  price: number;
+  productId: string;
+};
+
+export type IngredientsType = {
+  id: string;
+  name: string;
+  imageUri: string;
+  price: number;
+};
+
+export type UpdateProductIngredientsInputType = {
+  name: string;
+  imageUri: string;
+  price: number;
+  id: string;
+};
+
+export type CartIngredientsInputType = {
+  id: string;
 };

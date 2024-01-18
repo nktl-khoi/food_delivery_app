@@ -12,6 +12,7 @@ import {OnPressItem} from '../../../types/GenericType';
 
 type ThisProps = ItemOngoingType & {
   onPressItem: OnPressItem;
+  listIngredients: {}[];
 };
 
 export default function ItemOnGoing(props: ThisProps): JSX.Element {
@@ -31,6 +32,13 @@ export default function ItemOnGoing(props: ThisProps): JSX.Element {
           <ItemSubtitleText style={{marginBottom: 4}}>
             Size: {props.size}
           </ItemSubtitleText>
+          {props.listIngredients.map((item: any) => {
+            return (
+              <ItemSubtitleText key={item.productIngredient.name}>
+                {item.productIngredient.name}
+              </ItemSubtitleText>
+            );
+          })}
           <ItemSubtitleText>x{props.amount}</ItemSubtitleText>
         </View>
 

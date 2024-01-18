@@ -37,6 +37,7 @@ export default function InComingOrderTab(props: ThisProps): JSX.Element {
               data={
                 data?.getOnGoingOrdersOfShop ? data.getOnGoingOrdersOfShop : {}
               }
+              detailScreenName={'OrderDetailScreenShop'}
               navigation={props.navigation}
             />
           )}

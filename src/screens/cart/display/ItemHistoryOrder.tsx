@@ -17,6 +17,7 @@ import StatusDisplay from '../tabs/on_going/StatusDisplay';
 
 type ThisProps = ItemHistoryOrderType & {
   onPressItem: OnPressItem;
+  listIngredients: {}[];
 };
 
 export default function ItemHistoryOrder(props: ThisProps): JSX.Element {
@@ -36,6 +37,13 @@ export default function ItemHistoryOrder(props: ThisProps): JSX.Element {
           <ItemTitleText style={styles.text}>{props.foodName}</ItemTitleText>
 
           <ItemSubtitleText>{dateString}</ItemSubtitleText>
+          {props.listIngredients.map((item: any) => {
+            return (
+              <ItemSubtitleText key={item.productIngredient.name}>
+                {item.productIngredient.name}
+              </ItemSubtitleText>
+            );
+          })}
           <PriceText priceValue={props.priceValue} textSize={14} />
         </View>
 

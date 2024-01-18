@@ -6,11 +6,12 @@ import ItemOnGoing from './ItemOnGoing';
 type ThisProps = {
   data: ArrayLike<any>;
   navigation: any;
+  detailScreenName: string;
 };
 
 export default function OnGoingList(props: ThisProps): JSX.Element {
   const navigateToOrderDetailScreen = (item: any) => {
-    props.navigation.navigate('OrderDetailsScreen', {
+    props.navigation.navigate(props.detailScreenName, {
       orderId: item.id,
     });
   };
@@ -25,6 +26,7 @@ export default function OnGoingList(props: ThisProps): JSX.Element {
         id={item.id}
         status={item.status}
         imageUri={item.productSize.product.imageUri}
+        listIngredients={item.orderIngredientDetail}
       />
     ),
     [props.data],

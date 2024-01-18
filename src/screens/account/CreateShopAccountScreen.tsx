@@ -1,7 +1,10 @@
 import {useState} from 'react';
 import {useMutation} from '@apollo/client';
-import {CreateShopInputType} from '../../types/ItemType';
-import {CREATE_SHOP_ACCOUNT} from './AccountQuery';
+import {
+  CreateShopAccountWithImageInputType,
+  CreateShopInputType,
+} from '../../types/ItemType';
+import {CREATE_SHOP_ACCOUNT_WITH_IMAGE} from './AccountQuery';
 import Snackbar from 'react-native-snackbar';
 import {
   Asset,
@@ -21,8 +24,9 @@ export default function CreateShopAccountScreen(props: ThisProps): JSX.Element {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [shopName, setShopName] = useState('');
   const [imageUri, setImageUri] = useState('');
-  const [createShopAccount, {loading, data, error}] =
-    useMutation(CREATE_SHOP_ACCOUNT);
+  const [createShopAccountWithImage, {loading, data, error}] = useMutation(
+    CREATE_SHOP_ACCOUNT_WITH_IMAGE,
+  );
 
   const [userId, setUserId] = useState(props.route.params.user.userId);
   const [imageFile, setImageFile] = useState<Asset>();
@@ -38,21 +42,21 @@ export default function CreateShopAccountScreen(props: ThisProps): JSX.Element {
     }
     if (imageFile) {
       try {
-        const publicId = await uploadImageToCloudinary(imageFile!);
-        let shop: CreateShopInputType = {
+        const url = await uploadImageToCloudinary(imageFile!);
+        let shop: CreateShopAccountWithImageInputType = {
           shopAddress: shopAddress,
           shopPhoneNumber: phoneNumber,
           shopName: shopName,
-          imageUri: publicId,
+          imageUri: url,
           userId: userId,
         };
-        await createShopAccount({
+        await createShopAccountWithImage({
           variables: {
             shop: shop,
           },
         }).then(() => {
           Snackbar.show({text: 'Shop account created success'});
-          props.navigation.navigate('AccountScreen');
+          props.navigation.goBack();
         });
       } catch (error) {
         console.log('EditAccountScreen: ', error);
@@ -65,7 +69,7 @@ export default function CreateShopAccountScreen(props: ThisProps): JSX.Element {
         imageUri: '',
         userId: userId,
       };
-      await createShopAccount({
+      await createShopAccountWithImage({
         variables: {
           shop: shop,
         },

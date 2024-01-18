@@ -4,7 +4,7 @@ import BasicInfoEditDisplay from './display/edit_info/BasicInfoEditDisplay';
 import {useState} from 'react';
 import SaveCancelButton from './display/SaveCancelButton';
 import {useMutation} from '@apollo/client';
-import {UPDATE_USER} from './AccountQuery';
+import {UPDATE_USER_WITH_IMAGE} from './AccountQuery';
 import {
   Asset,
   ImageLibraryOptions,
@@ -19,7 +19,9 @@ type ThisProps = {
 };
 
 export default function EditAccountScreen(props: ThisProps): JSX.Element {
-  const [updateUser, {loading, error, data}] = useMutation(UPDATE_USER);
+  const [updateUserWithImage, {loading, error, data}] = useMutation(
+    UPDATE_USER_WITH_IMAGE,
+  );
 
   const [name, setName] = useState(props.route.params.user.name);
   const [phone, setPhone] = useState(props.route.params.user.phone);
@@ -27,22 +29,21 @@ export default function EditAccountScreen(props: ThisProps): JSX.Element {
   const [email, setEmail] = useState(props.route.params.user.email);
   const [userId, setUserId] = useState(props.route.params.user.userId);
   const [imageUri, setImageUri] = useState(props.route.params.user.avatarUri);
-  const [publicId, setPublicId] = useState('');
   const [imageFile, setImageFile] = useState<Asset>();
 
   const onSave = async () => {
     if (imageFile) {
       try {
-        const publicId = await uploadImageToCloudinary(imageFile!);
+        const url = await uploadImageToCloudinary(imageFile!);
 
-        console.log(publicId);
-        await updateUser({
+        console.log(url);
+        await updateUserWithImage({
           variables: {
             userId: userId,
             name: name,
             phone: phone,
             address: address,
-            publicId: publicId,
+            imageUri: url,
           },
         }).then(() => {
           console.log('Update with image');
@@ -53,13 +54,13 @@ export default function EditAccountScreen(props: ThisProps): JSX.Element {
         console.log('EditAccountScreen: ', error);
       }
     } else {
-      await updateUser({
+      await updateUserWithImage({
         variables: {
           userId: userId,
           name: name,
           phone: phone,
           address: address,
-          publicId: '',
+          imageUri: '',
         },
       }).then(() => {
         console.log('Update without image');

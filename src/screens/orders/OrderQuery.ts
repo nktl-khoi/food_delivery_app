@@ -19,6 +19,7 @@ export const GET_ORDER_BY_ID = gql`
         title
         fullPrice
         product {
+          id
           imageUri
           title
           productSubcategory {
@@ -27,20 +28,27 @@ export const GET_ORDER_BY_ID = gql`
                 shopName
                 shopPhoneNumber
                 imageUri
-                user {
-                  loginAs
-                }
               }
             }
           }
         }
       }
+      orderIngredientDetail {
+        productIngredient {
+          id
+          name
+          price
+          imageUri
+        }
+      }
+      fullPrice
       status
       createdAt
       updatedAt
       user {
         name
         imageUrl
+        loginAs
         account {
           id
           email

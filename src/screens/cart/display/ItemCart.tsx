@@ -23,6 +23,7 @@ type ThisProps = ItemCartType & {
   refetch: any;
   sizeId: string;
   onPressItem: OnPressItem;
+  listIngredients: {}[];
 };
 
 export default function ItemCart(props: ThisProps): JSX.Element {
@@ -73,6 +74,14 @@ export default function ItemCart(props: ThisProps): JSX.Element {
           <ItemSubtitleText style={{marginBottom: 4}}>
             Size: {props.size}
           </ItemSubtitleText>
+
+          {props.listIngredients.map((item: any) => {
+            return (
+              <ItemSubtitleText key={item.productIngredient.name}>
+                {item.productIngredient.name}
+              </ItemSubtitleText>
+            );
+          })}
 
           <PriceText priceValue={props.priceValue} textSize={14} />
         </View>

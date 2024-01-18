@@ -37,6 +37,7 @@ export default function MyCartTab(props: ThisProps): JSX.Element {
                 data?.getOnGoingOrdersOfUser ? data.getOnGoingOrdersOfUser : {}
               }
               navigation={props.navigation}
+              detailScreenName={'OrderDetailsScreen'}
             />
           )}
         </View>

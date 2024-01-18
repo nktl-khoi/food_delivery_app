@@ -48,10 +48,11 @@ export default function CartListFood(props: ThisProps): JSX.Element {
           foodName={item.productSize.product.title}
           size={item.productSize.title}
           sizeId={item.productSize.id}
-          priceValue={item.productSize.fullPrice}
+          priceValue={item.fullPrice}
           amount={item.amount}
           id={item.id}
           imageUri={item.productSize.product.imageUri}
+          listIngredients={item.cartIngredientDetail}
         />
       );
     },

@@ -89,15 +89,45 @@ export const UPDATE_USER = gql`
   }
 `;
 
+export const UPDATE_USER_WITH_IMAGE = gql`
+  mutation Mutation(
+    $userId: String!
+    $name: String
+    $phone: String
+    $address: String
+    $imageUri: String
+  ) {
+    updateUserWithImage(
+      userId: $userId
+      name: $name
+      phone: $phone
+      address: $address
+      imageUri: $imageUri
+    )
+  }
+`;
+
 export const CREATE_SHOP_ACCOUNT = gql`
   mutation CreateShopAccount($shop: createShopAccountInput!) {
     createShopAccount(shop: $shop)
   }
 `;
 
+export const CREATE_SHOP_ACCOUNT_WITH_IMAGE = gql`
+  mutation CreateShopAccountWithImage($shop: createShopAccountWithImageInput!) {
+    createShopAccountWithImage(shop: $shop)
+  }
+`;
+
 export const UPDATE_SHOP_ACCOUNT = gql`
   mutation UpdateShopAccount($shop: updateShopAccountInput) {
     updateShopAccount(shop: $shop)
+  }
+`;
+
+export const UPDATE_SHOP_ACCOUNT_WITH_IMAGE = gql`
+  mutation UpdateShopWithImage($shop: updateShopAccountWithImageInput) {
+    updateShopWithImage(shop: $shop)
   }
 `;
 

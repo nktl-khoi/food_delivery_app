@@ -12,7 +12,7 @@ import {
 } from 'react-native-image-picker';
 import {uploadImageToCloudinary} from '../../utils/updateImageToCloudinary';
 
-import {UpdateProductInputType} from '../../types/ItemType';
+import {UpdateProductWithImageInputType} from '../../types/ItemType';
 
 import {ErrorMessageText} from '../../components/texts/ErrorMessageText';
 import ProductAvatarDisplay from '../category/display/ProductAvatarDisplay';
@@ -21,8 +21,9 @@ import ProductNameInputDisplay from '../category/display/ProductNameInputDisplay
 import ProductDescriptionInputDisplay from '../category/display/ProductDescriptionInputDisplay';
 import ListTagFoodDisplay from '../../screens/food_details/display/ListTagFoodDisplay';
 import {useMutation} from '@apollo/client';
-import {UPDATE_PRODUCT} from './ShopFoodDetailQuery';
+import {UPDATE_PRODUCT_WITH_IMAGE} from './ShopFoodDetailQuery';
 import Snackbar from 'react-native-snackbar';
+import ListIngredientsDisplay from './display/ListIngredientsDisplay';
 
 type ThisProps = {
   data: any;
@@ -41,12 +42,17 @@ export default function EditProductWithData(props: ThisProps): JSX.Element {
   const [shopId, setShopId] = useState(
     props.data.productSubcategory.productCategory.shop.id,
   );
+  const [productIngredients, setProductIngredients] = useState(
+    props.data.productIngredients,
+  );
   const [chosenSubCategoryId, setChosenSubCategoryId] = useState('');
 
   const [isDisplayError, setDisplayError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [updateProduct, {data, loading}] = useMutation(UPDATE_PRODUCT);
+  const [updateProductWithImage, {data, loading}] = useMutation(
+    UPDATE_PRODUCT_WITH_IMAGE,
+  );
 
   const onSave = async () => {
     if (
@@ -66,15 +72,15 @@ export default function EditProductWithData(props: ThisProps): JSX.Element {
 
     if (imageFile) {
       try {
-        const publicId = await uploadImageToCloudinary(imageFile!);
-        let input: UpdateProductInputType = {
+        const url = await uploadImageToCloudinary(imageFile!);
+        let input: UpdateProductWithImageInputType = {
           title: productName,
           description: productDescription,
-          imagePublicId: publicId,
+          imageUri: url,
           subcategoryId: chosenSubCategoryId,
           productId: props.data.id,
         };
-        await updateProduct({
+        await updateProductWithImage({
           variables: {
             productInput: input,
           },
@@ -86,14 +92,14 @@ export default function EditProductWithData(props: ThisProps): JSX.Element {
         console.log('ShopCategoryScreen: ', error);
       }
     } else {
-      let input: UpdateProductInputType = {
+      let input: UpdateProductWithImageInputType = {
         title: productName,
         description: productDescription,
-        imagePublicId: '',
+        imageUri: '',
         subcategoryId: chosenSubCategoryId,
         productId: props.data.id,
       };
-      await updateProduct({
+      await updateProductWithImage({
         variables: {
           productInput: input,
         },
@@ -134,6 +140,12 @@ export default function EditProductWithData(props: ThisProps): JSX.Element {
   const navigateToCreateTagScreen = () => {
     props.navigation.navigate('AddProductTagScreen', {
       foodId: props.data.id,
+    });
+  };
+
+  const navigateToAddIngredientsScreen = () => {
+    props.navigation.navigate('AddIngredientsScreen', {
+      productId: props.data.id,
     });
   };
 
@@ -188,6 +200,24 @@ export default function EditProductWithData(props: ThisProps): JSX.Element {
         </View>
 
         <ListTagFoodDisplay data={props.data.ProductTag} />
+      </View>
+
+      <View>
+        <View style={styles.title}>
+          <ItemTitleText>Ingredients</ItemTitleText>
+          <TextLink
+            style={styles.textLink}
+            onPress={navigateToAddIngredientsScreen}>
+            Add new
+          </TextLink>
+        </View>
+
+        <ListIngredientsDisplay
+          isPressable={true}
+          data={props.data.productIngredients}
+          navigation={props.navigation}
+          productId={props.data.id}
+        />
       </View>
 
       <ProductNameInputDisplay

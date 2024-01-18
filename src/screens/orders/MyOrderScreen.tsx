@@ -4,7 +4,10 @@ import GenericFlatList from '../../components/displays/generics/GenericFlatList'
 import ItemOrder from './display/ItemOrder';
 import {ListHeaderOrder} from './display/ListHeaderOrder';
 import {ListFooterOrder} from './display/ListFooterOrder';
-import {OrderProductInputType} from '../../types/ItemType';
+import {
+  CartIngredientsInputType,
+  OrderProductInputType,
+} from '../../types/ItemType';
 import {useMutation} from '@apollo/client';
 import {CREATE_ORDER_PRODUCT} from './OrderQuery';
 
@@ -26,23 +29,35 @@ export default function MyOrderScreen(props: ThisProps): JSX.Element {
       new Array<OrderProductInputType>();
 
     for (let i = 0; i < listData.length; i++) {
+      let listIngredients: CartIngredientsInputType[] =
+        new Array<CartIngredientsInputType>();
+      let ingredients = listData[i].cartIngredientDetail;
+      for (let j = 0; j < ingredients.length; j++) {
+        listIngredients.push({id: ingredients[j].productIngredient.id});
+      }
+
+      console.log(`ITEM ${i}, ingredients ${listIngredients} `);
+      console.log(listIngredients);
+
       orderProducts.push({
         deliveredAt: deliveryTime.toISOString(),
         deliveryAddress: deliveryAddress,
-        totalCost: listData[i].productSize.fullPrice,
+        totalCost: listData[i].fullPrice,
         userId: userId,
         commentary: commentary,
         count: listData[i].amount,
-        fullPrice: listData[i].productSize.fullPrice,
+        fullPrice: listData[i].fullPrice,
         productSizeId: listData[i].productSize.id,
+        listIngredients: listIngredients,
       });
     }
+
     await createOrderProduct({
       variables: {
         orderProducts: orderProducts,
       },
     }).then(() => {
-      props.navigation.navigate('CompleteOrderScreen');
+      props.navigation.replace('CompleteOrderScreen');
     });
   };
 
@@ -53,8 +68,14 @@ export default function MyOrderScreen(props: ThisProps): JSX.Element {
         imageUri={item.productSize.product.imageUri}
         foodName={item.productSize.product.title}
         size={item.productSize.title}
-        priceValue={item.productSize.fullPrice}
+        priceValue={item.fullPrice}
         amount={item.amount}
+        listIngredients={item.cartIngredientDetail}
+        onPressItem={() =>
+          props.navigation.navigate('FoodDetailsScreen', {
+            foodId: item.productSize.product.id,
+          })
+        }
       />
     ),
     [listData],

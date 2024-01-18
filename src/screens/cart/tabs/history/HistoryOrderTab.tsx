@@ -41,6 +41,7 @@ export default function HistoryOrderTab(props: ThisProps): JSX.Element {
                   : {}
               }
               navigation={props.navigation}
+              detailScreenName={'OrderDetailsScreen'}
             />
           )}
         </View>

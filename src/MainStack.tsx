@@ -57,7 +57,7 @@ export function MainStack(props: ThisProps): JSX.Element {
   }
   return (
     <SafeAreaView>
-      <Text>Main stack no user error login</Text>
+      <Text></Text>
     </SafeAreaView>
   );
 }

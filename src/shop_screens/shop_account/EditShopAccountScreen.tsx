@@ -1,6 +1,9 @@
 import {useState} from 'react';
 import {useMutation} from '@apollo/client';
-import {UpdateShopInputType} from '../../types/ItemType';
+import {
+  UpdateShopAccountWithImageInputType,
+  UpdateShopInputType,
+} from '../../types/ItemType';
 import Snackbar from 'react-native-snackbar';
 import {
   Asset,
@@ -9,7 +12,7 @@ import {
 } from 'react-native-image-picker';
 import {uploadImageToCloudinary} from '../../utils/updateImageToCloudinary';
 import GenericCreateShopScreen from '../../screens/account/generics/GenericCreateShopScreen';
-import {UPDATE_SHOP_ACCOUNT} from '../../screens/account/AccountQuery';
+import {UPDATE_SHOP_ACCOUNT_WITH_IMAGE} from '../../screens/account/AccountQuery';
 
 type ThisProps = {
   navigation: any;
@@ -23,8 +26,9 @@ export default function EditShopAccountScreen(props: ThisProps): JSX.Element {
   const [phoneNumber, setPhoneNumber] = useState(props.route.params.user.phone);
   const [shopName, setShopName] = useState(props.route.params.user.name);
   const [imageUri, setImageUri] = useState(props.route.params.user.avatarUri);
-  const [updateShopAccount, {loading, data, error}] =
-    useMutation(UPDATE_SHOP_ACCOUNT);
+  const [updateShopWithImage, {loading, data, error}] = useMutation(
+    UPDATE_SHOP_ACCOUNT_WITH_IMAGE,
+  );
 
   const [shopId, setShopId] = useState(props.route.params.user.shopId);
   const [imageFile, setImageFile] = useState<Asset>();
@@ -40,21 +44,21 @@ export default function EditShopAccountScreen(props: ThisProps): JSX.Element {
     }
     if (imageFile) {
       try {
-        const publicId = await uploadImageToCloudinary(imageFile!);
-        let shop: UpdateShopInputType = {
+        const url = await uploadImageToCloudinary(imageFile!);
+        let shop: UpdateShopAccountWithImageInputType = {
           shopAddress: shopAddress,
           shopPhoneNumber: phoneNumber,
           shopName: shopName,
-          imagePublicId: publicId,
+          imageUri: url,
           shopId: shopId,
         };
-        await updateShopAccount({
+        await updateShopWithImage({
           variables: {
             shop: shop,
           },
         }).then(() => {
           Snackbar.show({text: 'Shop account updated success'});
-          props.navigation.navigate('ShopAccountScreen');
+          props.navigation.goBack();
         });
       } catch (error) {
         console.log('EditAccountScreen: ', error);
@@ -67,7 +71,7 @@ export default function EditShopAccountScreen(props: ThisProps): JSX.Element {
         imagePublicId: '',
         shopId: shopId,
       };
-      await updateShopAccount({
+      await updateShopWithImage({
         variables: {
           shop: shop,
         },

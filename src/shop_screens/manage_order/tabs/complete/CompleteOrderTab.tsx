@@ -39,6 +39,7 @@ export default function CompleteOrderTab(props: ThisProps): JSX.Element {
                   ? data.getCompleteOrdersOfShop
                   : {}
               }
+              detailScreenName={'OrderDetailScreenShop'}
               navigation={props.navigation}
             />
           )}

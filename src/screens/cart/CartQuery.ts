@@ -15,7 +15,14 @@ export const GET_ALL_CART_PRODUCT_OF_USER = gql`
           imageUri
         }
       }
+
       amount
+      cartIngredientDetail {
+        productIngredient {
+          id
+          name
+        }
+      }
     }
   }
 `;
@@ -59,6 +66,14 @@ export const GET_ON_GOING_ORDER_OF_USER = gql`
           imageUri
         }
       }
+      orderIngredientDetail {
+        productIngredient {
+          id
+          name
+          imageUri
+          price
+        }
+      }
       status
       count
     }
@@ -75,6 +90,14 @@ export const GET_COMPLETE_ORDER_OF_USER = gql`
         product {
           title
           imageUri
+        }
+      }
+      orderIngredientDetail {
+        productIngredient {
+          id
+          name
+          imageUri
+          price
         }
       }
       createdAt

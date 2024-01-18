@@ -15,6 +15,7 @@ import DeleteFoodDialog from './display/DeleteFoodDialog';
 import fonts from '../../styles/fonts';
 import AverageRatingScoreDisplay from '../../screens/food_details/display/AverageRatingScoreDisplay';
 import ShopImageFoodDisplay from './display/ShopImageFoodDisplay';
+import ListIngredientsDisplay from './display/ListIngredientsDisplay';
 
 type ThisProps = {
   data: any;
@@ -79,6 +80,17 @@ export default function ShopFoodDetailWithData(props: ThisProps): JSX.Element {
           productId={props.data.getProductById.id}
           isShowCount={true}
         />
+
+        <View>
+          <SectionText style={{fontSize: 16}}>Ingredients</SectionText>
+
+          <ListIngredientsDisplay
+            isPressable={false}
+            data={props.data.getProductById.productIngredients}
+            navigation={props.navigation}
+            productId={props.data.id}
+          />
+        </View>
 
         <View>
           <SectionText style={{fontSize: 16}}>Description</SectionText>

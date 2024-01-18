@@ -14,6 +14,12 @@ export const CREATE_PRODUCT = gql`
   }
 `;
 
+export const CREATE_PRODUCT_WITH_IMAGE = gql`
+  mutation CreateProductWithImage($productInput: createProductWithImageInput!) {
+    createProductWithImage(productInput: $productInput)
+  }
+`;
+
 export const GET_ALL_SUB_CATEGORY_TAG_OF_SHOP = gql`
   query GetAllSubCategoryOfShop($id: ID!) {
     getAllSubCategoryOfShop(id: $id) {

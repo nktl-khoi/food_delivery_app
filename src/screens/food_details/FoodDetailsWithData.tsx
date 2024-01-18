@@ -16,6 +16,8 @@ import {ADD_PRODUCT_TO_CART} from './FoodDetailsQuery';
 import Snackbar from 'react-native-snackbar';
 import fonts from '../../styles/fonts';
 import AverageRatingScoreDisplay from './display/AverageRatingScoreDisplay';
+import ListMultiChosenDisplay from '../../components/displays/ListMultiChosenDisplay';
+import {CartIngredientsInputType} from '../../types/ItemType';
 
 type ThisProps = {
   data: any;
@@ -27,6 +29,10 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
   const [addProductToCart, {loading, error, data}] =
     useMutation(ADD_PRODUCT_TO_CART);
 
+  const [ingredientsSet, setIngredientsSet] = useState<
+    Set<CartIngredientsInputType>
+  >(new Set());
+
   const [amount, setAmount] = useState(1);
   const [chosen, setChosen] = useState('');
   const [fullPrice, setFullPrice] = useState(
@@ -34,13 +40,21 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
   );
 
   const addToCart = async () => {
+    let listIngredients: {}[] = [];
+
+    ingredientsSet.forEach(item => {
+      listIngredients.push({id: item});
+    });
+
     if (chosen === null) console.log('please chose size');
+
     await addProductToCart({
       variables: {
         productSizeId: chosen,
         userId: props.userId,
         amount: amount,
         fullPrice: fullPrice * amount,
+        listIngredients: listIngredients,
       },
     }).then(() => {
       Snackbar.show({text: 'Item added to cart!'});
@@ -112,6 +126,21 @@ export default function FoodDetailsWithData(props: ThisProps): JSX.Element {
           productId={props.data.getProductById.id}
           isShowCount={true}
         />
+
+        {props.data.getProductById.productIngredients.length > 0 ? (
+          <View>
+            <SectionText style={{fontSize: 16}}>Ingredients</SectionText>
+            <ListMultiChosenDisplay
+              data={props.data.getProductById.productIngredients}
+              ingredientsSet={ingredientsSet}
+              // navigation={props.navigation}
+              // productId={''}
+              // isPressable={true}
+            />
+          </View>
+        ) : (
+          <View></View>
+        )}
 
         <View>
           <SectionText style={{fontSize: 16}}>Description</SectionText>

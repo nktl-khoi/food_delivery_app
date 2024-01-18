@@ -15,9 +15,9 @@ import {
 } from 'react-native-image-picker';
 import {uploadImageToCloudinary} from '../../utils/updateImageToCloudinary';
 import {useMutation} from '@apollo/client';
-import {CREATE_PRODUCT} from './ShopCategoryQuery';
+import {CREATE_PRODUCT_WITH_IMAGE} from './ShopCategoryQuery';
 import Snackbar from 'react-native-snackbar';
-import {CreateProductInputType} from '../../types/ItemType';
+import {CreateProductWithImageInputType} from '../../types/ItemType';
 import ListSubcategoryDisplay from './display/ListSubcategoryDisplay';
 import {ErrorMessageText} from '../../components/texts/ErrorMessageText';
 
@@ -33,7 +33,9 @@ export default function AddProductShopScreen(props: ThisProps): JSX.Element {
   const [productDescription, setProductDescription] = useState('');
   const [imageUri, setImageUri] = useState('');
   const [imageFile, setImageFile] = useState<Asset>();
-  const [createProduct, {data, loading}] = useMutation(CREATE_PRODUCT);
+  const [createProductWithImage, {data, loading}] = useMutation(
+    CREATE_PRODUCT_WITH_IMAGE,
+  );
   const [chosenSubCategoryId, setChosenSubCategoryId] = useState('');
 
   const [isDisplayError, setDisplayError] = useState(false);
@@ -61,16 +63,16 @@ export default function AddProductShopScreen(props: ThisProps): JSX.Element {
 
     if (imageFile) {
       try {
-        const publicId = await uploadImageToCloudinary(imageFile!);
-        let input: CreateProductInputType = {
+        const url = await uploadImageToCloudinary(imageFile!);
+        let input: CreateProductWithImageInputType = {
           title: productName,
           price: +productPrice,
           description: productDescription,
-          imagePublicId: publicId,
+          imageUri: url,
           sizeTitle: productSize,
           subcategoryId: chosenSubCategoryId,
         };
-        await createProduct({
+        await createProductWithImage({
           variables: {
             productInput: input,
           },
@@ -82,15 +84,15 @@ export default function AddProductShopScreen(props: ThisProps): JSX.Element {
         console.log('ShopCategoryScreen: ', error);
       }
     } else {
-      let input: CreateProductInputType = {
+      let input: CreateProductWithImageInputType = {
         title: productName,
         price: +productPrice,
         description: productDescription,
-        imagePublicId: '',
+        imageUri: '',
         sizeTitle: productSize,
         subcategoryId: chosenSubCategoryId,
       };
-      await createProduct({
+      await createProductWithImage({
         variables: {
           productInput: input,
         },
